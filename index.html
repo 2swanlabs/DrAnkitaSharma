@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prime Dental Clinic — Dr. Ankita Sharma, Shimla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white:      #FFFFFF;
+    --bg:         #F2FBF9;
+    --bg-alt:     #E4F6F3;
+    --teal:       #17A89F;
+    --teal-dark:  #0D6E68;
+    --teal-light: #C0EAE6;
+    --coral:      #F9704A;
+    --sky:        #E8F7FF;
+    --text:       #1A3035;
+    --muted:      #5C8885;
+    --border:     rgba(23,168,159,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 10%; height: 72px;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border); transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 28px rgba(23,168,159,0.13); }
+  .nav-logo { display: flex; flex-direction: column; line-height: 1; gap: 3px; }
+  .nav-logo span:first-child { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 600; color: var(--teal-dark); }
+  .nav-logo span:last-child { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); font-weight: 400; }
+  .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); opacity: 0.6; transition: opacity 0.2s, color 0.2s; }
+  .nav-links a:hover { opacity: 1; color: var(--teal); }
+  .btn-call {
+    display: inline-flex; align-items: center;
+    background: var(--coral); color: #fff; padding: 10px 22px; border-radius: 40px;
+    font-size: 13px; font-weight: 500; text-decoration: none;
+    box-shadow: 0 4px 16px rgba(249,112,74,0.32); transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .btn-call:hover { background: #e85e35; transform: translateY(-1px); }
+  /* Desktop: icon + "Call — number" all on one row */
+  .btn-call-text { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .btn-call-text svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .btn-call-label { white-space: nowrap; }
+  .btn-call-number { white-space: nowrap; }
+
+  /* HERO */
+  .hero { position: relative; height: 100vh; min-height: 680px; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('Hero.png');
+    background-size: cover; background-position: center top;
+    transform: scale(1.04); transition: transform 8s ease;
+  }
+  .hero-bg.loaded { transform: scale(1); }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top,
+      rgba(13,110,104,0.86) 0%,
+      rgba(13,110,104,0.30) 52%,
+      rgba(200,240,236,0.08) 100%);
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 72px 88px; max-width: 780px; }
+  .hero-tag {
+    display: inline-block; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.90); margin-bottom: 20px;
+    background: rgba(255,255,255,0.18); padding: 6px 16px; border-radius: 20px; backdrop-filter: blur(8px);
+  }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px,7vw,84px); font-weight: 300; line-height: 1.07; color: #fff; margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: #AEEEE9; }
+  .hero p { font-size: 16px; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,0.84); margin-bottom: 40px; max-width: 500px; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block; background: var(--coral); color: #fff;
+    padding: 14px 36px; font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none; border-radius: 40px;
+    box-shadow: 0 4px 20px rgba(249,112,74,0.40); transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: #e85e35; transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-block; border: 1.5px solid rgba(255,255,255,0.60); color: #fff;
+    padding: 14px 36px; font-size: 13px; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none; border-radius: 40px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.13); }
+  .hero-scroll { position: absolute; bottom: 40px; right: 60px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .hero-scroll span { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.55); writing-mode: vertical-rl; }
+  .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0.65), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+  @keyframes scrollPulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.55)} }
+
+  /* COMMONS */
+  section { padding: 100px 10%; }
+  .section-label { display: block; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; font-weight: 500; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4.5vw,56px); font-weight: 300; line-height: 1.12; color: var(--teal-dark); }
+  .section-title em { font-style: italic; color: var(--coral); }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    padding: 0 10%; display: grid; grid-template-columns: repeat(3,1fr);
+    background: #fff; border-top: 4px solid var(--teal);
+  }
+  .intro-card { padding: 52px 44px; border-right: 1px solid var(--border); transition: background 0.3s; }
+  .intro-card:last-child { border-right: none; }
+  .intro-card:hover { background: var(--bg-alt); }
+  .intro-card .num { font-family: 'Cormorant Garamond', serif; font-size: 54px; font-weight: 300; color: var(--teal); line-height: 1; margin-bottom: 10px; }
+  .intro-card h3 { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; color: var(--teal-dark); margin-bottom: 10px; text-transform: uppercase; }
+  .intro-card p { font-size: 14px; color: var(--muted); line-height: 1.72; font-weight: 300; }
+
+  /* ABOUT */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0 10%; min-height: 600px; }
+  .about-image { position: relative; overflow: hidden; min-height: 520px; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.8s; }
+  .about-image:hover img { transform: scale(1.04); }
+  .about-image-badge {
+    position: absolute; bottom: 32px; right: 0;
+    background: var(--coral); color: #fff; padding: 18px 28px;
+    font-size: 13px; font-weight: 400; line-height: 1.5;
+  }
+  .about-image-badge strong { display: block; font-size: 19px; font-family: 'Cormorant Garamond', serif; }
+  .about-content { background: var(--teal-light); padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
+  .about-divider { width: 48px; height: 3px; background: linear-gradient(to right, var(--teal), var(--coral)); border-radius: 2px; margin: 28px 0; }
+  .about-content p { font-size: 15px; line-height: 1.85; color: #215550; font-weight: 300; margin-bottom: 16px; }
+  .about-credentials { margin-top: 32px; padding: 24px 28px; background: #fff; border-radius: 14px; border-left: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(23,168,159,0.10); }
+  .about-credentials .cred-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: var(--teal-dark); margin-bottom: 4px; }
+  .about-credentials .cred-title { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); }
+
+  /* TREATMENTS */
+  .treatments { background: #fff; }
+  .treatments-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+  .treatments-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .treatment-card { position: relative; overflow: hidden; aspect-ratio: 16/10; cursor: pointer; border-radius: 20px; box-shadow: 0 6px 28px rgba(23,168,159,0.13); }
+  .treatment-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s; }
+  .treatment-card:hover img { transform: scale(1.07); }
+  .treatment-overlay {
+    position: absolute; inset: 0; border-radius: 20px;
+    background: linear-gradient(to top, rgba(13,110,104,0.92) 0%, rgba(13,110,104,0.14) 56%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 32px; transition: background 0.4s;
+  }
+  .treatment-card:hover .treatment-overlay { background: linear-gradient(to top, rgba(13,110,104,0.96) 0%, rgba(13,110,104,0.40) 60%, rgba(13,110,104,0.06) 100%); }
+  .treatment-num { font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: 0.16em; margin-bottom: 6px; text-transform: uppercase; }
+  .treatment-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #fff; margin-bottom: 8px; line-height: 1; }
+  .treatment-desc { font-size: 13px; color: rgba(255,255,255,0.82); font-weight: 300; line-height: 1.65; max-height: 0; overflow: hidden; transition: max-height 0.4s, opacity 0.4s; opacity: 0; }
+  .treatment-card:hover .treatment-desc { max-height: 80px; opacity: 1; }
+  .treatment-bar { width: 0; height: 2px; background: var(--coral); margin-top: 14px; border-radius: 2px; transition: width 0.4s; }
+  .treatment-card:hover .treatment-bar { width: 36px; }
+
+  /* GALLERY */
+  .smile-section { padding: 100px 10%; background: var(--sky); }
+  .smile-header { text-align: center; margin-bottom: 52px; }
+  .smile-gallery { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.4fr; grid-template-rows: 260px 260px; gap: 12px; }
+  .smile-img { overflow: hidden; border-radius: 16px; box-shadow: 0 4px 18px rgba(23,168,159,0.09); }
+  .smile-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+  .smile-img:hover img { transform: scale(1.06); }
+  .smile-img.tall { grid-row: span 2; }
+  .smile-img.wide { grid-column: span 2; }
+
+  /* WHY US */
+  .why-us { background: var(--bg-alt); padding: 100px 10%; }
+  .why-header { margin-bottom: 60px; }
+  .why-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  .why-card {
+    background: #fff; padding: 36px 28px; border-radius: 20px;
+    border: 1.5px solid var(--teal-light);
+    box-shadow: 0 4px 20px rgba(23,168,159,0.07);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  }
+  .why-card:hover { transform: translateY(-7px); box-shadow: 0 16px 40px rgba(23,168,159,0.16); border-color: var(--teal); }
+  .why-card .why-num { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 300; color: var(--teal); margin-bottom: 14px; line-height: 1; }
+  .why-card h4 { font-size: 14px; font-weight: 500; color: var(--teal-dark); margin-bottom: 10px; }
+  .why-card p { font-size: 13px; color: var(--muted); line-height: 1.74; font-weight: 300; }
+
+  /* CLINICAL RESULTS */
+  .clinical-section { padding: 100px 10%; background: var(--bg); }
+  .clinical-header { text-align: center; margin-bottom: 52px; }
+  .clinical-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .clinical-card { border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(23,168,159,0.12); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+  .clinical-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(23,168,159,0.22); }
+  .clinical-card img { width: 100%; height: 260px; object-fit: cover; display: block; transition: transform 0.5s; }
+  .clinical-card:hover img { transform: scale(1.04); }
+  .clinical-card-label { background: var(--teal-dark); color: #fff; padding: 12px 18px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 100px 10%; background: #fff; }
+  .test-header { margin-bottom: 48px; }
+  .test-carousel-wrap { position: relative; }
+  .test-carousel-viewport { overflow: hidden; width: 100%; }
+  .test-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  .test-card {
+    background: var(--bg); padding: 36px; border-radius: 20px;
+    border: 1.5px solid var(--border);
+    transition: box-shadow 0.3s, border-color 0.3s;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    /* height is determined by content — no fixed height */
+    align-self: stretch;
+  }
+  .test-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(23,168,159,0.13); border-color: var(--teal); }
+  .test-stars { color: #FFAB2E; font-size: 17px; letter-spacing: 2px; margin-bottom: 18px; }
+  .test-quote { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; font-style: italic; line-height: 1.65; color: #0A4845; margin-bottom: 24px; }
+  .test-author { font-size: 13px; font-weight: 500; color: #3D6B68; letter-spacing: 0.06em; text-transform: uppercase; }
+  .carousel-nav {
+    display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 40px;
+  }
+  .carousel-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #fff; border: 1.5px solid var(--teal-light);
+    color: var(--teal-dark); cursor: pointer;
+    box-shadow: 0 4px 18px rgba(23,168,159,0.13);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .carousel-btn:hover { background: var(--teal); border-color: var(--teal); color: #fff; transform: scale(1.08); box-shadow: 0 8px 28px rgba(23,168,159,0.28); }
+  .carousel-btn:hover svg { stroke: #fff; }
+  .carousel-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .carousel-dots { display: flex; gap: 8px; align-items: center; }
+  .carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-light); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; padding: 0; }
+  .carousel-dot.active { background: var(--teal); transform: scale(1.35); }
+  .carousel-dot:hover { background: var(--teal); }
+
+  /* CONTACT BAND */
+  .contact-band { position: relative; overflow: hidden; display: flex; align-items: stretch; padding: 0; min-height: 520px; }
+  .contact-band-bg { position: absolute; inset: 0; background-image: url('Gallery1.png'); background-size: cover; background-position: center; }
+  .contact-band-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(23,168,159,0.93), rgba(13,110,104,0.90)); }
+  .contact-band-map { position: relative; z-index: 2; flex: 0 0 46%; min-height: 520px; overflow: hidden; }
+  .contact-band-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+  .contact-band-content { position: relative; z-index: 2; flex: 1; padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  .contact-band-left .section-label { color: rgba(255,255,255,0.78); }
+  .contact-band-left .section-title { color: #fff; max-width: 440px; }
+  .contact-band-left .section-title em { color: #AEEEE9; }
+  .contact-band-right { display: flex; flex-direction: column; gap: 20px; }
+  .contact-info-item { display: flex; flex-direction: column; gap: 4px; }
+  .contact-info-item label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.68); }
+  .contact-info-item a, .contact-info-item span { font-size: 15px; color: #fff; font-weight: 300; text-decoration: none; line-height: 1.55; transition: color 0.2s; }
+  .contact-info-item a:hover { color: #AEEEE9; }
+  .contact-band-btns { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .btn-white { display: inline-block; background: #fff; color: var(--teal-dark); padding: 12px 28px; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; border-radius: 40px; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+  .btn-white:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .btn-outline-w { display: inline-block; border: 1.5px solid rgba(255,255,255,0.60); color: #fff; padding: 12px 28px; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; border-radius: 40px; transition: background 0.2s, border-color 0.2s; }
+  .btn-outline-w:hover { background: rgba(255,255,255,0.14); border-color: #fff; }
+
+  /* FOOTER */
+  footer { background: #0A2422; color: rgba(255,255,255,0.72); padding: 72px 10% 36px; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 48px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .footer-brand .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: #fff; display: block; margin-bottom: 3px; }
+  .footer-brand .logo-sub { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 18px; }
+  .footer-brand p { font-size: 14px; line-height: 1.8; font-weight: 300; color: rgba(255,255,255,0.68); max-width: 240px; }
+  .footer-col h4 { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5DDBD5; margin-bottom: 18px; font-weight: 400; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { font-size: 14px; color: rgba(255,255,255,0.68); text-decoration: none; font-weight: 300; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: #5DDBD5; }
+  .timing-table { width: 100%; }
+  .timing-row { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .timing-row:last-child { border-bottom: none; }
+  .timing-row .day { color: rgba(255,255,255,0.80); font-weight: 400; }
+  .timing-row .time { color: #5DDBD5; font-size: 11px; }
+  .footer-map-link { display: inline-flex; align-items: center; gap: 8px; background: rgba(93,219,213,0.12); border: 1px solid rgba(93,219,213,0.30); color: #5DDBD5; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 10px 16px; border-radius: 40px; margin-top: 18px; transition: background 0.2s; }
+  .footer-map-link:hover { background: rgba(93,219,213,0.22); }
+  .footer-bottom { padding-top: 32px; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.52); font-weight: 300; }
+  .footer-social { display: flex; gap: 20px; }
+  .footer-social a { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.60); text-decoration: none; transition: color 0.2s; }
+  .footer-social a:hover { color: #5DDBD5; }
+
+  /* FLOATING */
+  .floating-btns { position: fixed; bottom: 32px; right: 28px; z-index: 200; display: flex; flex-direction: column; gap: 12px; opacity: 1; pointer-events: all; transform: translateY(0); }
+  .float-btn { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; text-decoration: none; box-shadow: 0 4px 20px rgba(0,0,0,0.16); transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+  .float-btn:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.22); }
+  .float-btn.whatsapp { background: #25D366; }
+  .float-btn.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+  .float-btn svg { width: 22px; height: 22px; fill: #fff; }
+  .float-label { position: absolute; right: 62px; background: var(--teal-dark); color: #fff; font-size: 11px; font-weight: 500; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s, right 0.2s; }
+  .float-btn:hover .float-label { opacity: 1; right: 66px; }
+  .float-label::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); border: 5px solid transparent; border-right: none; border-left-color: var(--teal-dark); }
+
+  /* DIVIDER */
+  .teal-divider { height: 1px; background: linear-gradient(to right, transparent, var(--teal-light), transparent); margin: 0 10%; }
+
+  /* FADE */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s, transform 0.65s; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up.delay-1 { transition-delay: 0.12s; }
+  .fade-up.delay-2 { transition-delay: 0.24s; }
+  .fade-up.delay-3 { transition-delay: 0.36s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 0 24px; } .nav-links { display: none; }
+    section, .smile-section, .why-us, .testimonials, .clinical-section { padding: 64px 24px; }
+    .hero-content { padding: 0 24px 64px; }
+    .about { grid-template-columns: 1fr; padding: 0 24px; } .about-content { padding: 48px 32px; } .about-image { min-height: 360px; }
+    .treatments-grid { grid-template-columns: 1fr; } .treatments-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .clinical-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-band { flex-direction: column; }
+    .contact-band-map { flex: 0 0 300px; min-height: 300px; width: 100%; }
+    .contact-band-content { padding: 48px 24px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .intro-strip { grid-template-columns: 1fr; padding: 0 24px; } .intro-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .teal-divider { margin: 0 24px; }
+    .map-inner { grid-template-columns: 1fr; }
+    .map-label-col { padding: 48px 24px; }
+    .map-embed-col { min-height: 340px; position: relative; }
+
+    /* Gallery mobile nav shows on tablet+mobile — JS does the slider layout */
+    .gallery-mobile-nav { display: flex !important; }
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 40px; } .footer-top { grid-template-columns: 1fr; }
+    footer { padding: 48px 20px 24px; } .footer-bottom { flex-direction: column; text-align: center; }
+    section, .smile-section, .why-us, .testimonials, .clinical-section { padding: 52px 20px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .teal-divider { margin: 0 20px; }
+    .about { padding: 0; } .intro-strip { padding: 0; }
+
+    /* Nav call button — two lines on mobile: [icon + "Call —"] then number */
+    .btn-call { padding: 8px 14px; }
+    .btn-call-text { flex-wrap: wrap; gap: 2px 6px; white-space: normal; max-width: 90px; }
+    .btn-call-text svg { flex-shrink: 0; }
+    .btn-call-label { white-space: nowrap; }
+    .btn-call-number { width: 100%; font-size: 12px; font-weight: 600; letter-spacing: 0.01em; }
+
+    /* Clinical mobile nav shows on mobile — JS does the slider layout */
+    .clinical-mobile-nav { display: flex !important; }
+  }
+
+  /* Clinical mobile nav — hidden on desktop, shown on mobile */
+  .clinical-mobile-nav {
+    display: none;
+    align-items: center; justify-content: center; gap: 20px; margin-top: 32px;
+  }
+
+  /* Gallery mobile nav — hidden on desktop, shown on mobile+tablet */
+  .gallery-mobile-nav {
+    display: none;
+    align-items: center; justify-content: center; gap: 20px; margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-logo">
+    <span>Prime Dental Clinic</span>
+    <span>Shimla, Himachal Pradesh</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#treatments">Treatments</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:07018491110" class="btn-call">
+    <span class="btn-call-text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.06 2.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      <span class="btn-call-label">Call &mdash;</span><span class="btn-call-number">07018491110</span>
+    </span>
+  </a>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Prime Dental Clinic — Shimla</span>
+    <h1>Your Smile,<br><em>Perfected.</em></h1>
+    <p>Expert dental care by Dr. Ankita Sharma, specialist in Prosthodontics &amp; Implantology. Where precision meets aesthetics.</p>
+    <div class="hero-btns">
+      <a href="tel:07018491110" class="btn-primary">Book Appointment</a>
+      <a href="#treatments" class="btn-ghost">Our Treatments</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<div class="intro-strip" id="introStrip">
+  <div class="intro-card fade-up">
+    <div class="num">8+</div>
+    <h3>Years of Expertise</h3>
+    <p>Dedicated practice in Prosthodontics &amp; Implantology serving Shimla with personalised care.</p>
+  </div>
+  <div class="intro-card fade-up delay-1">
+    <div class="num">4</div>
+    <h3>Specialty Treatments</h3>
+    <p>Implants, Crowns, Braces, and Smile Designing — all under one roof, one trusted doctor.</p>
+  </div>
+  <div class="intro-card fade-up delay-2">
+    <div class="num">7</div>
+    <h3>Days a Week</h3>
+    <p>Open every single day — extended hours Mon–Sat for your convenience and comfort.</p>
+  </div>
+</div>
+
+<div class="teal-divider"></div>
+
+<div class="about" id="about">
+  <div class="about-image">
+    <img src="Doctor-closeup.png" alt="Dr. Ankita Sharma" loading="lazy">
+    <div class="about-image-badge"><strong>Dr. Ankita Sharma</strong>BDS, MDS — Prosthodontics</div>
+  </div>
+  <div class="about-content">
+    <span class="section-label">Meet Your Doctor</span>
+    <h2 class="section-title">A Specialist<br>You Can <em>Trust</em></h2>
+    <div class="about-divider"></div>
+    <p>Dr. Ankita Sharma has over eight years of experience in advanced dental care, with a post-graduate specialization in Prosthodontics and Implantology from one of India's leading institutions. Her approach combines clinical precision with a strong focus on aesthetics to deliver natural, confident smiles.</p>
+    <p>At Prime Dental Clinic, every patient receives personalized attention and thoughtful care. Dr. Sharma personally evaluates each case, explains treatment options clearly, and creates customized plans based on individual comfort, needs, and expectations. From routine dental care to complete smile makeovers, the clinic is committed to providing professional, gentle, and honest treatment at every step.</p>
+    <div class="about-credentials">
+      <div class="cred-name">Dr. Ankita Sharma</div>
+      <div class="cred-title">BDS, MDS — Prosthodontics &amp; Implantology</div>
+    </div>
+  </div>
+</div>
+
+<section class="treatments" id="treatments">
+  <div class="treatments-header">
+    <div>
+      <span class="section-label">Our Specialties</span>
+      <h2 class="section-title">Key <em>Treatments</em></h2>
+    </div>
+    <a href="tel:07018491110" class="btn-primary" style="font-size:12px;padding:11px 28px;">Consult Now</a>
+  </div>
+  <div class="treatments-grid">
+    <div class="treatment-card fade-up">
+      <img src="implant.jpg" alt="Dental Implants" loading="lazy">
+      <div class="treatment-overlay">
+        <div class="treatment-num">01 — Implants</div>
+        <div class="treatment-name">Dental Implants</div>
+        <div class="treatment-desc">Permanent, natural-looking tooth replacement that preserves bone and restores full function — the gold standard of modern dentistry.</div>
+        <div class="treatment-bar"></div>
+      </div>
+    </div>
+    <div class="treatment-card fade-up delay-1">
+      <img src="crown.avif" alt="Dental Crowns" loading="lazy">
+      <div class="treatment-overlay">
+        <div class="treatment-num">02 — Crowns</div>
+        <div class="treatment-name">Crowns &amp; Bridges</div>
+        <div class="treatment-desc">Custom-crafted porcelain or zirconia crowns blending seamlessly with your natural teeth for lasting strength and beauty.</div>
+        <div class="treatment-bar"></div>
+      </div>
+    </div>
+    <div class="treatment-card fade-up delay-2">
+      <img src="braces.jpg" alt="Braces" loading="lazy">
+      <div class="treatment-overlay">
+        <div class="treatment-num">03 — Orthodontics</div>
+        <div class="treatment-name">Braces &amp; Aligners</div>
+        <div class="treatment-desc">From traditional metal braces to clear aligners — a personalised plan to straighten teeth at any age, comfortably and effectively.</div>
+        <div class="treatment-bar"></div>
+      </div>
+    </div>
+    <div class="treatment-card fade-up delay-3">
+      <img src="smiled-esign.jpg" alt="Smile Designing" loading="lazy">
+      <div class="treatment-overlay">
+        <div class="treatment-num">04 — Cosmetic</div>
+        <div class="treatment-name">Smile Designing</div>
+        <div class="treatment-desc">A comprehensive cosmetic makeover — veneers, whitening, contouring — crafted to enhance your natural beauty and confidence.</div>
+        <div class="treatment-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="smile-section" id="gallery">
+  <div class="smile-header">
+    <span class="section-label">Transformations</span>
+    <h2 class="section-title">Beautiful <em>Smiles</em></h2>
+  </div>
+  <div class="smile-gallery" id="smileGallery">
+    <div class="smile-img tall"><img src="Gallery1.png" alt="Clinic Interior" loading="lazy"></div>
+    <div class="smile-img"><img src="implant.jpg" alt="Dental Implant" loading="lazy"></div>
+    <div class="smile-img"><img src="braces.jpg" alt="Braces Treatment" loading="lazy"></div>
+    <div class="smile-img tall"><img src="Doctor-closeup.png" alt="Dr. Ankita Sharma" loading="lazy"></div>
+    <div class="smile-img wide"><img src="smiled-esign.jpg" alt="Smile Design Result" loading="lazy"></div>
+  </div>
+  <div class="gallery-mobile-nav" id="galleryMobileNav">
+    <button class="carousel-btn" id="galleryPrevBtn" aria-label="Previous image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="carousel-dots" id="galleryDots"></div>
+    <button class="carousel-btn" id="galleryNextBtn" aria-label="Next image">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</section>
+
+<section class="clinical-section" id="results">
+  <div class="clinical-header fade-up">
+    <span class="section-label">Real Patients · Real Results</span>
+    <h2 class="section-title">Clinical <em>Transformations</em></h2>
+    <p style="font-size:15px;color:var(--muted);margin-top:14px;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.75;">Before-and-after results from actual patients treated at Prime Dental Clinic by Dr. Ankita Sharma.</p>
+  </div>
+  <div class="clinical-grid">
+    <div class="clinical-card fade-up">
+      <img src="ClinicalResults1.png" alt="Smile Makeover Result" loading="lazy">
+      <div class="clinical-card-label">Smile Makeover</div>
+    </div>
+    <div class="clinical-card fade-up delay-1">
+      <img src="ClinicalResults2.png" alt="Dental Veneers Result" loading="lazy">
+      <div class="clinical-card-label">Smile Correction</div>
+    </div>
+    <div class="clinical-card fade-up delay-2">
+      <img src="ClinicalResults3.png" alt="Aligners Treatment Result" loading="lazy">
+      <div class="clinical-card-label">Aligners Treatment</div>
+    </div>
+    <div class="clinical-card fade-up delay-3">
+      <img src="ClinicalResults4.png" alt="Braces Treatment Result" loading="lazy">
+      <div class="clinical-card-label">Braces Treatment</div>
+    </div>
+    <div class="clinical-card fade-up">
+      <img src="ClinicalResults5.png" alt="Orthodontics Result" loading="lazy">
+      <div class="clinical-card-label">Orthodontics</div>
+    </div>
+    <div class="clinical-card fade-up delay-1">
+      <img src="ClinicalResults6.png" alt="Crown Restoration" loading="lazy">
+      <div class="clinical-card-label">Crown Restoration</div>
+    </div>
+    <div class="clinical-card fade-up delay-2">
+      <img src="ClinicalResults7.png" alt="Full Smile Transformation" loading="lazy">
+      <div class="clinical-card-label">Smile Transformation</div>
+    </div>
+    <div class="clinical-card fade-up delay-3">
+      <img src="ClinicalResults8.png" alt="Dental Filling Result" loading="lazy">
+      <div class="clinical-card-label">Tooth Restoration</div>
+    </div>
+  </div>
+  <!-- Mobile-only: auto-scroll dots indicator for Clinical Results (no buttons) -->
+  <div class="clinical-mobile-nav" id="clinicalMobileNav">
+    <div class="carousel-dots" id="clinicalDots"></div>
+  </div>
+</section>
+
+<section class="why-us">
+  <div class="why-header">
+    <span class="section-label">Why Choose Us</span>
+    <h2 class="section-title">Excellence in <em>Every Detail</em></h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card fade-up"><div class="why-num">MDS</div><h4>Specialist Qualified</h4><p>Post-graduate degree in Prosthodontics &amp; Implantology — the highest level of dental specialisation for complex and cosmetic cases.</p></div>
+    <div class="why-card fade-up delay-1"><div class="why-num">1:1</div><h4>Personal Attention</h4><p>Every consultation is personal. Dr. Ankita Sharma evaluates each case herself, designing treatments that fit your unique needs.</p></div>
+    <div class="why-card fade-up delay-2"><div class="why-num">Hi-Fi</div><h4>Modern Equipment</h4><p>State-of-the-art tools for accurate diagnosis and minimally invasive procedures with the best outcomes and comfort.</p></div>
+    <div class="why-card fade-up delay-3"><div class="why-num">Safe</div><h4>Hygienic Environment</h4><p>Rigorous sterilisation protocols and infection-control standards so you feel completely safe throughout your treatment.</p></div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="test-header">
+    <span class="section-label">Patient Stories</span>
+    <h2 class="section-title">What Our <em>Patients Say</em></h2>
+  </div>
+  <div class="test-carousel-wrap">
+    <div class="test-carousel-viewport">
+      <div class="test-track" id="testTrack">
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"I got my Braces from Prime Dental Clinic — Khalini and was thoroughly impressed by the level of care I received. Dr. Ankita Sharma explained my condition clearly, how Braces work, the time span — everything was made crystal clear. Quite impressed by the results. I will always thank Dr. Ankita Sharma."</div>
+          <div class="test-author">Muskan Singh &mdash; Prime Dental, Khalini</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"I had a great experience with Ankita Mam. She took the time to explain each procedure clearly and made sure I felt at ease throughout the visit. I appreciate the care and attention to detail in their work. Highly recommend for anyone looking for a trustworthy and skilled dentist."</div>
+          <div class="test-author">Raman Ratnaik</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"I had a great experience at Dr. Ankita's office. She was very professional and knowledgeable. She took the time to answer all of my questions and make me feel comfortable. I would definitely recommend Dr. Ankita to anyone looking for a dentist."</div>
+          <div class="test-author">Bharatbhushan Pandit</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"I have known Dr Ankita Sharma for a while now. I was thoroughly impressed with her deep knowledge and professionalism. I've been going there regularly and referred many friends and relatives — all are quite happy. The quality of treatment under excellent hygienic conditions is rare to see in our city."</div>
+          <div class="test-author">Pooja Bharti &mdash; via Google Reviews</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"I came across Prime Dental Clinic through Google as it had amazing reviews. Trust me, she's an amazing doctor and guided me so well throughout the process. She is very friendly and very knowledgeable, and does her work with great passion. You won't find a better doctor nearby."</div>
+          <div class="test-author">Payal Sharma &mdash; via Google Reviews</div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="test-quote">"Recently my teeth started to give me some trouble. Luckily, I ended up consulting Dr Ankita. She is highly qualified and gave me the best advice. My treatment went very smooth and the results were amazing. My gratitude to Dr Ankita."</div>
+          <div class="test-author">Ayush Sharma</div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" id="prevBtn" aria-label="Previous reviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="carousel-dots" id="carouselDots"></div>
+      <button class="carousel-btn" id="nextBtn" aria-label="Next reviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="contact-band" id="contact">
+  <div class="contact-band-bg"></div>
+  <div class="contact-band-overlay"></div>
+  <div class="contact-band-map">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3415.282!2d77.16951!3d31.08920!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3905798d90cb053b%3A0xa48d7ae9f3fc0c2!2sPrime%20Dental%20Clinic%20shimla%20by%20Dr.%20Ankita%20Sharma!5e0!3m2!1sen!2sin!4v1748256000000!5m2!1sen!2sin"
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="Prime Dental Clinic on Google Maps">
+    </iframe>
+  </div>
+  <div class="contact-band-content">
+    <div class="contact-band-left">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Begin Your <em>Smile Journey</em> Today</h2>
+    </div>
+    <div class="contact-band-right">
+      <div class="contact-info-item"><label>Phone</label><a href="tel:07018491110">07018491110</a></div>
+      <div class="contact-info-item"><label>Address</label><span>1st Floor, Above HP World, Sumna Niwas,<br>Khalini, Shimla, HP 171002</span></div>
+      <div class="contact-band-btns">
+        <a href="tel:07018491110" class="btn-white">Call Now</a>
+        <a href="https://wa.me/917018491110?text=I%20would%20like%20to%20Book%20an%20Appointment" target="_blank" class="btn-outline-w">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-text">Prime Dental</span>
+      <span class="logo-sub">Clinic &mdash; Shimla</span>
+      <p>Expert dental care by Dr. Ankita Sharma, MDS. Specialising in Prosthodontics, Implantology, and Smile Designing in Shimla.</p>
+      <a href="https://www.google.com/maps/place/Prime+Dental+Clinic+shimla+by+Dr.+Ankita+Sharma/@31.0837771,77.1680148,15.75z/data=!4m6!3m5!1s0x3905798d90cb053b:0xa48d7ae9f3fc0c2!8m2!3d31.0892019!4d77.1720869!16s%2Fg%2F11ptrcv5z3" target="_blank" class="footer-map-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        View on Google Maps
+      </a>
+    </div>
+    <div class="footer-col">
+      <h4>Treatments</h4>
+      <ul>
+        <li><a href="#treatments">Dental Implants</a></li>
+        <li><a href="#treatments">Crowns &amp; Bridges</a></li>
+        <li><a href="#treatments">Braces &amp; Aligners</a></li>
+        <li><a href="#treatments">Smile Designing</a></li>
+        <li><a href="#treatments">Teeth Whitening</a></li>
+        <li><a href="#treatments">Root Canal</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Clinic Hours</h4>
+      <div class="timing-table">
+        <div class="timing-row"><span class="day">Monday</span><span class="time">10:00 &ndash; 18:00</span></div>
+        <div class="timing-row"><span class="day">Tuesday</span><span class="time">10:00 &ndash; 18:00</span></div>
+        <div class="timing-row"><span class="day">Wednesday</span><span class="time">10:00 &ndash; 18:30</span></div>
+        <div class="timing-row"><span class="day">Thursday</span><span class="time">10:00 &ndash; 18:30</span></div>
+        <div class="timing-row"><span class="day">Friday</span><span class="time">10:00 &ndash; 18:30</span></div>
+        <div class="timing-row"><span class="day">Saturday</span><span class="time">10:00 &ndash; 18:30</span></div>
+        <div class="timing-row"><span class="day">Sunday</span><span class="time">10:00 &ndash; 18:00</span></div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:07018491110">07018491110</a></li>
+        <li><a href="https://wa.me/917018491110?text=I%20would%20like%20to%20Book%20an%20Appointment" target="_blank">WhatsApp Us</a></li>
+        <li><a href="https://www.instagram.com/primedentalclinicshimla" target="_blank">@primedentalclinicshimla</a></li>
+      </ul>
+      <br>
+      <h4>Find Us</h4>
+      <ul>
+        <li><a href="#" style="cursor:default;">1st Floor, Above HP World</a></li>
+        <li><a href="#" style="cursor:default;">Sumna Niwas, Khalini</a></li>
+        <li><a href="#" style="cursor:default;">Shimla, HP 171002</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Prime Dental Clinic, Shimla. All rights reserved. Dr. Ankita Sharma, BDS, MDS.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/primedentalclinicshimla" target="_blank">Instagram</a>
+      <a href="https://wa.me/917018491110?text=I%20would%20like%20to%20Book%20an%20Appointment" target="_blank">WhatsApp</a>
+      <a href="https://www.google.com/maps/place/Prime+Dental+Clinic+shimla+by+Dr.+Ankita+Sharma/@31.0837771,77.1680148,15.75z" target="_blank">Google Maps</a>
+    </div>
+    <a href="https://2swan.in" target="_blank" rel="noopener" style="font-size:13px;color:rgba(255,255,255,0.52);letter-spacing:0.06em;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#5DDBD5'" onmouseout="this.style.color='rgba(255,255,255,0.52)'">Designed By 2 Swan</a>
+  </div>
+</footer>
+
+<div class="floating-btns" id="floatingBtns">
+  <a href="https://wa.me/917018491110?text=I%20would%20like%20to%20Book%20an%20Appointment" target="_blank" class="float-btn whatsapp">
+    <span class="float-label">WhatsApp</span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a href="https://www.instagram.com/primedentalclinicshimla" target="_blank" class="float-btn instagram">
+    <span class="float-label">Instagram</span>
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+  </a>
+</div>
+
+<script>
+  /* NAV SCROLL */
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
+  window.addEventListener('load', () => document.getElementById('heroBg').classList.add('loaded'));
+
+  /* FADE IN */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.14 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* SMOOTH SCROLL */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  /* ─── shared helpers ─── */
+  function buildDots(wrap, count, onClickFn) {
+    wrap.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('button');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.addEventListener('click', () => onClickFn(i));
+      wrap.appendChild(d);
+    }
+  }
+  function setActiveDot(wrap, idx) {
+    wrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     REVIEWS CAROUSEL
+     Desktop (>1024px): 3 cards visible, auto every 5s
+     Tablet + Mobile (≤1024px): 1 card visible, auto every 5s
+     All sizes: prev/next buttons, wraps around
+  ═══════════════════════════════════════════════════════ */
+  (function () {
+    const viewport = document.querySelector('.test-carousel-viewport');
+    const track    = document.getElementById('testTrack');
+    const prevBtn  = document.getElementById('prevBtn');
+    const nextBtn  = document.getElementById('nextBtn');
+    const dotsWrap = document.getElementById('carouselDots');
+    if (!track || !viewport) return;
+
+    const cards = Array.from(track.children);
+    const total = cards.length;
+    const GAP   = 20;
+    let current = 0, autoTimer = null;
+
+    function vis()   { return window.innerWidth > 1024 ? 3 : 1; }
+    function pages() { return total - vis() + 1; }
+
+    function layout() {
+      const vpW  = viewport.offsetWidth;
+      const v    = vis();
+      const gap  = v === 1 ? 0 : GAP;
+      const cardW = (vpW - gap * (v - 1)) / v;
+      track.style.gap = gap + 'px';
+      cards.forEach(c => { c.style.width = cardW + 'px'; c.style.minWidth = cardW + 'px'; });
+    }
+
+    function goTo(idx) {
+      const p = pages();
+      current = ((idx % p) + p) % p;
+      const v    = vis();
+      const gap  = v === 1 ? 0 : GAP;
+      const vpW  = viewport.offsetWidth;
+      const cardW = (vpW - gap * (v - 1)) / v;
+      track.style.transform = 'translateX(-' + current * (cardW + gap) + 'px)';
+      setActiveDot(dotsWrap, current);
+      prevBtn.disabled = false; nextBtn.disabled = false;
+    }
+
+    function startAuto() { stopAuto(); autoTimer = setInterval(() => goTo(current + 1), 5000); }
+    function stopAuto()  { clearInterval(autoTimer); autoTimer = null; }
+
+    function init() {
+      layout();
+      buildDots(dotsWrap, pages(), i => { goTo(i); startAuto(); });
+      current = 0; goTo(0); startAuto();
+    }
+
+    prevBtn.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+    nextBtn.addEventListener('click', () => { goTo(current + 1); startAuto(); });
+    viewport.addEventListener('mouseenter', stopAuto);
+    viewport.addEventListener('mouseleave', startAuto);
+
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { current = 0; init(); }, 150); });
+    init();
+  })();
+
+  /* ═══════════════════════════════════════════════════════
+     GALLERY SLIDER — tablet + mobile only (≤1024px)
+     Desktop: normal CSS grid
+     Tablet/Mobile: 1 image, auto every 4s, prev/next + dots
+  ═══════════════════════════════════════════════════════ */
+  (function () {
+    const gallery  = document.getElementById('smileGallery');
+    const prevBtn  = document.getElementById('galleryPrevBtn');
+    const nextBtn  = document.getElementById('galleryNextBtn');
+    const dotsWrap = document.getElementById('galleryDots');
+    if (!gallery || !prevBtn) return;
+
+    const items = Array.from(gallery.children);
+    const total = items.length;
+    let current = 0, autoTimer = null, active = false;
+    let vpDiv = null; // clipping wrapper injected on enable
+
+    function isSmall() { return window.innerWidth <= 1024; }
+
+    function goTo(idx) {
+      current = ((idx % total) + total) % total;
+      // Shift by multiples of the viewport width
+      const w = (vpDiv || gallery).offsetWidth;
+      gallery.style.transform = 'translateX(-' + (current * w) + 'px)';
+      setActiveDot(dotsWrap, current);
+      prevBtn.disabled = false; nextBtn.disabled = false;
+    }
+
+    function startAuto() { stopAuto(); autoTimer = setInterval(() => goTo(current + 1), 4000); }
+    function stopAuto()  { clearInterval(autoTimer); autoTimer = null; }
+
+    function enable() {
+      active = true;
+
+      // Create a clipping viewport wrapper if not already there
+      if (!vpDiv) {
+        vpDiv = document.createElement('div');
+        vpDiv.style.cssText = 'overflow:hidden;width:100%;position:relative;border-radius:16px;';
+        gallery.parentNode.insertBefore(vpDiv, gallery);
+        vpDiv.appendChild(gallery);
+      }
+
+      // Make gallery a flex row of full-width items
+      gallery.style.display    = 'flex';
+      gallery.style.flexWrap   = 'nowrap';
+      gallery.style.gap        = '0';
+      gallery.style.height     = '340px';
+      gallery.style.transition = 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)';
+      gallery.style.willChange = 'transform';
+      gallery.style.gridTemplateColumns = '';
+      gallery.style.gridTemplateRows    = '';
+
+      items.forEach(item => {
+        item.style.minWidth   = '100%';
+        item.style.width      = '100%';
+        item.style.flexShrink = '0';
+        item.style.gridRow    = '';
+        item.style.gridColumn = '';
+      });
+
+      buildDots(dotsWrap, total, i => { goTo(i); startAuto(); });
+      current = 0; goTo(0); startAuto();
+    }
+
+    function disable() {
+      active = false; stopAuto();
+
+      // Restore gallery out of wrapper
+      if (vpDiv) {
+        vpDiv.parentNode.insertBefore(gallery, vpDiv);
+        vpDiv.parentNode.removeChild(vpDiv);
+        vpDiv = null;
+      }
+
+      gallery.style.cssText = ''; // wipe all inline styles
+      items.forEach(item => { item.style.cssText = ''; });
+      dotsWrap.innerHTML = '';
+    }
+
+    function check() {
+      if (isSmall() && !active) enable();
+      else if (!isSmall() && active) disable();
+    }
+
+    prevBtn.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+    nextBtn.addEventListener('click', () => { goTo(current + 1); startAuto(); });
+
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(check, 150); });
+    check();
+  })();
+
+  /* ═══════════════════════════════════════════════════════
+     CLINICAL RESULTS — mobile only slider (≤600px)
+     Desktop + Tablet: normal CSS grid
+     Mobile: 1 card, auto every 4s, dots only (no buttons)
+  ═══════════════════════════════════════════════════════ */
+  (function () {
+    const grid     = document.querySelector('.clinical-grid');
+    const dotsWrap = document.getElementById('clinicalDots');
+    if (!grid) return;
+
+    const cards = Array.from(grid.children);
+    const total = cards.length;
+    let current = 0, autoTimer = null, active = false;
+    let vpDiv = null;
+
+    function isMobile() { return window.innerWidth <= 600; }
+
+    function goTo(idx) {
+      current = ((idx % total) + total) % total;
+      const w = (vpDiv || grid).offsetWidth;
+      grid.style.transform = 'translateX(-' + (current * w) + 'px)';
+      if (dotsWrap) setActiveDot(dotsWrap, current);
+    }
+
+    function startAuto() { stopAuto(); autoTimer = setInterval(() => goTo(current + 1), 4000); }
+    function stopAuto()  { clearInterval(autoTimer); autoTimer = null; }
+
+    function enable() {
+      active = true;
+
+      // Wrap grid in a clipping viewport
+      if (!vpDiv) {
+        vpDiv = document.createElement('div');
+        vpDiv.style.cssText = 'overflow:hidden;width:100%;position:relative;';
+        grid.parentNode.insertBefore(vpDiv, grid);
+        vpDiv.appendChild(grid);
+      }
+
+      grid.style.display    = 'flex';
+      grid.style.flexWrap   = 'nowrap';
+      grid.style.gap        = '0';
+      grid.style.transition = 'transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)';
+      grid.style.willChange = 'transform';
+      grid.style.gridTemplateColumns = '';
+
+      cards.forEach(c => {
+        c.style.minWidth   = '100%';
+        c.style.width      = '100%';
+        c.style.flexShrink = '0';
+      });
+
+      if (dotsWrap) buildDots(dotsWrap, total, i => { goTo(i); startAuto(); });
+      current = 0; goTo(0); startAuto();
+    }
+
+    function disable() {
+      active = false; stopAuto();
+
+      if (vpDiv) {
+        vpDiv.parentNode.insertBefore(grid, vpDiv);
+        vpDiv.parentNode.removeChild(vpDiv);
+        vpDiv = null;
+      }
+
+      grid.style.cssText = '';
+      cards.forEach(c => { c.style.cssText = ''; });
+      if (dotsWrap) dotsWrap.innerHTML = '';
+    }
+
+    function check() {
+      if (isMobile() && !active)       enable();
+      else if (!isMobile() && active)  disable();
+    }
+
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(check, 150); });
+    check();
+  })();
+</script>
+</body>
+</html>
