@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Demo Unavailable</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #0a0a0f;
+    }
+
+    /* ── Parallax Background (original) ── */
+    #bg-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    #bg-layer img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: auto;
+      display: block;
+      filter: blur(4px) brightness(0.48) saturate(0.85);
+      will-change: transform;
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0; z-index: 1;
+      background: linear-gradient(160deg, rgba(5,5,20,0.55) 0%, rgba(0,0,0,0.4) 50%, rgba(5,10,25,0.6) 100%);
+    }
+
+    #scroll-spacer {
+      position: relative; z-index: 2;
+      width: 100%; height: 400vh;
+      pointer-events: none;
+    }
+
+    /* ── Card anchor (fixed center) ── */
+    #card-anchor {
+      position: fixed;
+      inset: 0; z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════
+       DOODLE CARD
+    ══════════════════════════════════════ */
+    .doodle-card {
+      pointer-events: auto;
+      width: min(520px, 95vw);
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.55), 0 4px 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      animation: cardIn 0.8s cubic-bezier(0.34,1.4,0.64,1) 0.3s forwards;
+    }
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Illustrated header scene ── */
+    .doodle-header {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #1a0a2e 0%, #2d1b5e 28%, #7b3aad 58%, #e8632a 80%, #f4a261 100%);
+    }
+
+    /* Stars */
+    .doodle-header .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--d,3s) ease-in-out infinite var(--dl,0s);
+    }
+    @keyframes twinkle {
+      0%,100%{opacity:var(--op,.7);} 50%{opacity:.1;}
+    }
+
+    /* Sun */
+    .h-sun {
+      position: absolute;
+      bottom: 30%; left: 50%;
+      transform: translateX(-50%);
+      width: 68px; height: 68px;
+      background: radial-gradient(circle, #ffe566 40%, #ffd93d 70%, #f4a261 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 30px 15px rgba(255,210,60,0.4), 0 0 70px 35px rgba(255,160,80,0.2);
+      animation: sunPulse 4s ease-in-out infinite;
+    }
+    @keyframes sunPulse {
+      0%,100%{box-shadow:0 0 30px 15px rgba(255,210,60,0.4),0 0 70px 35px rgba(255,160,80,0.2);}
+      50%{box-shadow:0 0 45px 22px rgba(255,210,60,0.55),0 0 90px 50px rgba(255,160,80,0.3);}
+    }
+
+    /* Mesas */
+    .h-mesas { position: absolute; bottom: 20%; left: 0; right: 0; }
+    .h-mesas svg { width: 100%; display: block; }
+
+    /* Ground strip */
+    .h-ground {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 20%;
+      background: linear-gradient(180deg, #6b3200 0%, #3d1a00 100%);
+    }
+
+    /* Cacti */
+    .h-cactus {
+      position: absolute;
+      bottom: 20%;
+      animation: cactusWave 5s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    @keyframes cactusWave { 0%,100%{transform:rotate(-1deg);} 50%{transform:rotate(1.2deg);} }
+
+    /* Shooting star */
+    .h-shoot {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white; border-radius: 50%;
+      box-shadow: 0 0 4px 2px white;
+      top: 12%; left: 5%;
+      animation: shoot 7s linear 1.5s infinite;
+    }
+    @keyframes shoot {
+      0%{transform:translate(0,0) scaleX(1);opacity:1;}
+      4%{transform:translate(60px,38px) scaleX(22);opacity:1;}
+      5%{transform:translate(68px,43px) scaleX(1);opacity:0;}
+      100%{transform:translate(68px,43px) scaleX(1);opacity:0;}
+    }
+
+    /* ── RIDER ── */
+    .h-rider {
+      position: absolute;
+      bottom: 22%;
+      left: -200px;
+      animation: rideIn 3.5s cubic-bezier(0.25,0.46,0.45,0.94) 0.6s forwards;
+    }
+    @keyframes rideIn {
+      0%  { left: -200px; }
+      55% { left: calc(50% - 90px); animation-timing-function: cubic-bezier(0.4,0,1,1); }
+      82% { left: calc(50% - 90px); }
+      100%{ left: 110%; }
+    }
+
+    .h-horse-body { animation: gallop 0.3s ease-in-out infinite alternate; transform-origin: center; }
+    @keyframes gallop { from{transform:translateY(0) rotate(-1deg);} to{transform:translateY(-4px) rotate(1deg);} }
+
+    .h-leg1 { animation: ls1 0.3s ease-in-out infinite alternate; transform-origin: 50% 0; }
+    .h-leg2 { animation: ls2 0.3s ease-in-out infinite alternate; transform-origin: 50% 0; }
+    .h-leg3 { animation: ls1 0.3s ease-in-out infinite alternate 0.08s; transform-origin: 50% 0; }
+    .h-leg4 { animation: ls2 0.3s ease-in-out infinite alternate 0.08s; transform-origin: 50% 0; }
+    @keyframes ls1 { from{transform:rotate(-22deg);} to{transform:rotate(22deg);} }
+    @keyframes ls2 { from{transform:rotate(22deg);} to{transform:rotate(-22deg);} }
+
+    .h-arm { animation: armWave 0.35s ease-in-out infinite alternate; transform-origin: 20% 20%; }
+    @keyframes armWave { from{transform:rotate(-18deg);} to{transform:rotate(18deg);} }
+
+    /* floating letters in header */
+    .h-letter {
+      position: absolute;
+      animation: letterFloat var(--lf,2.5s) ease-in-out infinite var(--lfd,0s);
+      opacity: 0.9;
+    }
+    @keyframes letterFloat {
+      0%,100%{transform:translateY(0) rotate(var(--lr,-6deg));}
+      50%{transform:translateY(-7px) rotate(var(--lr2,5deg));}
+    }
+
+    /* dust puffs */
+    .h-dust {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(210,140,60,0.35);
+      animation: dustPuff 0.45s ease-out infinite alternate;
+    }
+    @keyframes dustPuff {
+      from{transform:scale(1) translateY(0);opacity:.4;}
+      to{transform:scale(1.5) translateY(-5px);opacity:0;}
+    }
+
+    /* ── CARD BODY ── */
+    .doodle-body {
+      padding: 1.6rem 1.8rem 1.5rem;
+      background: #fff;
+    }
+
+    .d-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fff0e0;
+      border: 1.5px solid #f4a261;
+      border-radius: 100px;
+      padding: 3px 11px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c85a1a;
+      margin-bottom: 0.8rem;
+    }
+    .d-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #e84444;
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+    .d-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.3rem, 3.5vw, 1.65rem);
+      color: #1a0a00;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+    .d-sub {
+      font-size: 0.68rem;
+      color: #c85a1a;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .d-divider {
+      display: flex; align-items: center; gap: 8px;
+      color: #f4a261; font-size: 0.9rem;
+      margin: 0.8rem 0;
+    }
+    .d-divider::before, .d-divider::after {
+      content:''; flex:1; height:1px;
+      background: linear-gradient(90deg, transparent, #f4d0a0, transparent);
+    }
+
+    .d-text {
+      font-size: 0.84rem;
+      line-height: 1.75;
+      color: #3d2000;
+    }
+    .d-text p + p { margin-top: 0.6rem; }
+
+    /* contact */
+    .d-contact {
+      margin-top: 1rem;
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, #1a0a2e 0%, #3a1060 100%);
+      border-radius: 14px;
+      padding: 0.75rem 1.1rem;
+      color: #fff;
+    }
+    .d-contact-icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .d-contact-lbl { font-size: 0.63rem; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 2px; }
+    .d-contact-val { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.01em; }
+
+    /* footer */
+    .d-footer {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px dashed #f4d0a0;
+      font-size: 0.71rem;
+      color: #a06030;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .d-footer a {
+      color: #c85a1a;
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 1.5px solid rgba(200,90,26,0.3);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .d-footer a:hover { opacity: 0.65; }
+
+    @media (max-width: 480px) {
+      .doodle-body { padding: 1.25rem 1.25rem 1.2rem; }
+      .doodle-header { height: 185px; }
+      #card-anchor { align-items: flex-end; padding-bottom: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Original parallax background -->
+  <div id="bg-layer">
+    <img src="background.png" alt="" aria-hidden="true" />
+  </div>
+  <div id="overlay" aria-hidden="true"></div>
+  <div id="scroll-spacer" aria-hidden="true"></div>
+
+  <!-- Doodle popup card -->
+  <div id="card-anchor">
+    <div class="doodle-card" role="main">
+
+      <!-- ═══ ILLUSTRATED HEADER ═══ -->
+      <div class="doodle-header" id="dh">
+
+        <!-- Stars (JS injected) -->
+        <div id="star-layer"></div>
+
+        <!-- Shooting star -->
+        <div class="h-shoot"></div>
+
+        <!-- Sun -->
+        <div class="h-sun"></div>
+
+        <!-- Mesas -->
+        <div class="h-mesas">
+          <svg viewBox="0 0 520 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <polygon points="0,80 0,35 55,18 105,25 130,80" fill="#5a1e00" opacity="0.8"/>
+            <polygon points="60,80 75,10 130,0 190,12 220,80" fill="#7a2a00"/>
+            <polygon points="180,80 200,22 245,8 295,18 315,80" fill="#8b3a0f"/>
+            <polygon points="330,80 355,28 400,12 445,22 465,80" fill="#8b3a0f"/>
+            <polygon points="420,80 445,18 495,5 520,14 520,80" fill="#7a2a00"/>
+          </svg>
+        </div>
+
+        <!-- Ground -->
+        <div class="h-ground"></div>
+
+        <!-- Cactus left -->
+        <div class="h-cactus" style="left:5%;">
+          <svg width="28" height="52" viewBox="0 0 28 52" fill="none">
+            <rect x="11" y="6" width="6" height="46" rx="3" fill="#2d5a1b"/>
+            <rect x="2" y="18" width="14" height="5" rx="2.5" fill="#2d5a1b"/>
+            <rect x="0" y="10" width="5" height="14" rx="2.5" fill="#2d5a1b"/>
+            <rect x="16" y="24" width="12" height="5" rx="2.5" fill="#2d5a1b"/>
+            <rect x="22" y="16" width="5" height="14" rx="2.5" fill="#2d5a1b"/>
+          </svg>
+        </div>
+
+        <!-- Cactus right -->
+        <div class="h-cactus" style="right:6%;animation-delay:-2.5s;">
+          <svg width="22" height="42" viewBox="0 0 22 42" fill="none">
+            <rect x="8" y="4" width="6" height="38" rx="3" fill="#2d5a1b"/>
+            <rect x="1" y="14" width="12" height="5" rx="2.5" fill="#2d5a1b"/>
+            <rect x="0" y="8" width="4" height="12" rx="2" fill="#2d5a1b"/>
+          </svg>
+        </div>
+
+        <!-- Floating letters -->
+        <div class="h-letter" style="right:18%;bottom:38%;--lf:2.8s;--lfd:-0.4s;--lr:-9deg;--lr2:6deg;">
+          <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+            <rect x="1" y="1" width="24" height="18" rx="2.5" fill="#fffbe8" stroke="#c9a050" stroke-width="1.3"/>
+            <polyline points="1,1 13,11 25,1" stroke="#c9a050" stroke-width="1.3" fill="none"/>
+            <circle cx="13" cy="11" r="2.2" fill="#e84444"/>
+          </svg>
+        </div>
+        <div class="h-letter" style="right:10%;bottom:34%;--lf:3.2s;--lfd:-1.5s;--lr:7deg;--lr2:-4deg;">
+          <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+            <rect x="1" y="1" width="18" height="13" rx="2" fill="#fffbe8" stroke="#c9a050" stroke-width="1.2"/>
+            <polyline points="1,1 10,8 19,1" stroke="#c9a050" stroke-width="1.2" fill="none"/>
+            <circle cx="10" cy="8" r="1.8" fill="#e84444"/>
+          </svg>
+        </div>
+
+        <!-- RIDER -->
+        <div class="h-rider" id="rider" style="bottom:20%;">
+          <svg width="175" height="115" viewBox="0 0 175 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="h-horse-body">
+              <!-- horse body -->
+              <ellipse cx="80" cy="78" rx="44" ry="22" fill="#6b3a00" stroke="#3d1a00" stroke-width="1.2"/>
+              <!-- neck -->
+              <path d="M108 67 Q118 52 116 40" stroke="#6b3a00" stroke-width="12" stroke-linecap="round"/>
+              <!-- head -->
+              <ellipse cx="118" cy="35" rx="14" ry="10" fill="#6b3a00" stroke="#3d1a00" stroke-width="1.2"/>
+              <!-- snout -->
+              <ellipse cx="128" cy="38" rx="6" ry="5" fill="#8b5a20" stroke="#3d1a00" stroke-width="1"/>
+              <circle cx="130" cy="39" r="1.2" fill="#3d1a00"/>
+              <!-- eye -->
+              <circle cx="119" cy="33" r="2.5" fill="#ffe8c0"/>
+              <circle cx="120" cy="33" r="1.3" fill="#111"/>
+              <circle cx="120.5" cy="32.5" r="0.4" fill="white"/>
+              <!-- ear -->
+              <polygon points="110,30 113,22 116,30" fill="#6b3a00" stroke="#3d1a00" stroke-width="0.8"/>
+              <!-- mane -->
+              <path d="M108 44 Q103 55 101 67" stroke="#3d1a00" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <!-- tail -->
+              <path d="M38 74 Q22 62 14 86 Q26 78 36 90" stroke="#3d1a00" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <!-- legs -->
+              <g class="h-leg1"><rect x="90" y="93" width="8" height="22" rx="4" fill="#5a2d00" stroke="#3d1a00" stroke-width="1"/></g>
+              <g class="h-leg2"><rect x="102" y="91" width="8" height="24" rx="4" fill="#5a2d00" stroke="#3d1a00" stroke-width="1"/></g>
+              <g class="h-leg3"><rect x="56" y="93" width="8" height="22" rx="4" fill="#5a2d00" stroke="#3d1a00" stroke-width="1"/></g>
+              <g class="h-leg4"><rect x="68" y="91" width="8" height="24" rx="4" fill="#5a2d00" stroke="#3d1a00" stroke-width="1"/></g>
+              <!-- hooves -->
+              <ellipse cx="94" cy="115" rx="6" ry="2.5" fill="#2d1200"/>
+              <ellipse cx="106" cy="115" rx="6" ry="2.5" fill="#2d1200"/>
+              <ellipse cx="60"  cy="115" rx="6" ry="2.5" fill="#2d1200"/>
+              <ellipse cx="72"  cy="115" rx="6" ry="2.5" fill="#2d1200"/>
+              <!-- saddle -->
+              <ellipse cx="80" cy="61" rx="20" ry="8" fill="#8b1a00"/>
+              <!-- RIDER BODY -->
+              <rect x="68" y="42" width="22" height="24" rx="5" fill="#2244aa"/>
+              <!-- head -->
+              <circle cx="79" cy="36" r="10" fill="#f4c88a"/>
+              <!-- hat brim -->
+              <ellipse cx="79" cy="29" rx="14" ry="3.5" fill="#8b1a00"/>
+              <!-- hat top -->
+              <rect x="70" y="16" width="18" height="15" rx="3.5" fill="#8b1a00"/>
+              <rect x="70" y="27" width="18" height="3" rx="1" fill="#3d1a00"/>
+              <!-- eyes -->
+              <circle cx="74" cy="35" r="1.8" fill="#333"/>
+              <circle cx="84" cy="35" r="1.8" fill="#333"/>
+              <circle cx="74.6" cy="34.4" r="0.6" fill="white"/>
+              <circle cx="84.6" cy="34.4" r="0.6" fill="white"/>
+              <!-- smile -->
+              <path d="M75 39 Q79 43 83 39" stroke="#c47a3a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+              <!-- waving arm + letter -->
+              <g class="h-arm">
+                <path d="M90 48 Q104 38 100 28" stroke="#2244aa" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="100" cy="27" r="4" fill="#f4c88a"/>
+                <g transform="translate(102,15) rotate(-12)">
+                  <rect x="0" y="0" width="18" height="13" rx="2" fill="#fffbe8" stroke="#c9a050" stroke-width="1"/>
+                  <polyline points="0,0 9,7 18,0" stroke="#c9a050" stroke-width="1" fill="none"/>
+                  <circle cx="9" cy="7" r="2" fill="#e84444"/>
+                </g>
+              </g>
+              <!-- rein arm -->
+              <path d="M68 52 Q54 56 46 60" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+              <!-- dust puffs -->
+              <circle class="h-dust" cx="26" cy="105" r="11" style="animation-delay:0s"/>
+              <circle class="h-dust" cx="14" cy="109" r="8" style="animation-delay:0.15s;background:rgba(210,140,60,0.25)"/>
+            </g>
+          </svg>
+        </div>
+
+      </div>
+      <!-- end doodle-header -->
+
+      <!-- ═══ CARD BODY ═══ -->
+      <div class="doodle-body">
+        <div class="d-badge"><span class="d-dot"></span> Demo Mode</div>
+        <h1 class="d-title">This Website Is<br/>Not Currently Live</h1>
+        <p class="d-sub">Demonstration Preview · Not For Public Use</p>
+
+        <div class="d-divider">✉</div>
+
+        <div class="d-text">
+          <p>If you're looking for the live version and believe it was taken down by mistake, or have any questions, feel free to reach out.</p>
+        </div>
+
+        <div class="d-contact">
+          <div class="d-contact-icon">📞</div>
+          <div>
+            <div class="d-contact-lbl">Get in touch</div>
+            <div class="d-contact-val">+91 99880 67867</div>
+          </div>
+        </div>
+
+        <div class="d-footer">
+          Thank you for your understanding.
+          <div style="margin-top:0.4rem;">
+            For more designs, visit
+            <a href="https://2swan.in" target="_blank" rel="noopener">2Swan.in</a>
+            &nbsp;— Portfolio
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Parallax (original) ── */
+    const bgImg = document.querySelector('#bg-layer img');
+    const spacer = document.getElementById('scroll-spacer');
+    let imgNaturalH = 0, ticking = false;
+
+    function onImgLoad() {
+      imgNaturalH = bgImg.naturalHeight * (window.innerWidth / bgImg.naturalWidth);
+      const scrollable = Math.max(imgNaturalH - window.innerHeight, window.innerHeight * 3);
+      spacer.style.height = scrollable + 'px';
+    }
+    if (bgImg.complete) onImgLoad(); else bgImg.addEventListener('load', onImgLoad);
+
+    function updateParallax() {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      const travelRange = Math.max(imgNaturalH - window.innerHeight, 0);
+      bgImg.style.transform = `translateY(${-(progress * travelRange * 0.6)}px)`;
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', onImgLoad);
+
+    /* ── Stars in doodle header ── */
+    const sl = document.getElementById('star-layer');
+    for (let i = 0; i < 35; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2 + 0.6;
+      s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*55}%;left:${Math.random()*100}%;--op:${Math.random()*0.6+0.2};--d:${Math.random()*3+2}s;--dl:-${Math.random()*3}s;`;
+      sl.appendChild(s);
+    }
+
+    /* ── Rider fade out after animation ends ── */
+    const rider = document.getElementById('rider');
+    rider.addEventListener('animationend', () => {
+      rider.style.transition = 'opacity 0.4s';
+      rider.style.opacity = '0';
+    });
+  </script>
+
+</body>
+</html>
